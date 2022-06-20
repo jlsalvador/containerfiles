@@ -1,16 +1,22 @@
-FROM archlinux:latest
-
-ENV RESOLUTION=1920x1080
-
-EXPOSE 5900
+FROM menci/archlinuxarm
 
 RUN set -ex ;\
 	pacman -Syu --noconfirm \
-		lxqt openbox ttf-dejavu \
-		firefox firefox-i18n-es-es \
-		tigervnc ;\
-	mkdir -p /root/.vnc ;\
-	echo -e "session=lxqt\ngeometry=${RESOLUTION}\nalwaysshared\nsecuritytypes=none" > /root/.vnc/config ;\
-	rm -rf /tmp/* /var/lib/
+		lxqt openbox \
+		tigervnc \
+		breeze-icons \
+		ttf-dejavu noto-fonts-emoji \
+		firefox ;\
+	useradd -m -G users user ;\
+	fc-cache ;\
+	rm -rf /tmp/* /var/cache/pacman/pkg/*
+
+COPY --chown=root:root copy_to_root /
+
+EXPOSE 5900
+
+USER user
+
+ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 
 CMD [ "vncserver", ":0" ]

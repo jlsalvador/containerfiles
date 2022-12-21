@@ -23,8 +23,8 @@ build () {
 	fi
 }
 
-VERSIONS=(13 14)
-for VERSION in 13 14; do
+VERSIONS=(12 13 14 15)
+for VERSION in 12 13 14 15; do
 	if [ ${VERSION} -eq ${VERSIONS[-1]} ]; then
 		LATEST=1
 	else

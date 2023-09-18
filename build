@@ -2,6 +2,7 @@
 set -ex
 
 BASEDIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+DOCKER_PROJECT_NAME="docker_builder"
 
 build () {
 	VERSION=$1
@@ -23,6 +24,8 @@ build () {
 	fi
 }
 
+docker buildx create --name "${DOCKER_PROJECT_NAME}"
+docker buildx use "${DOCKER_PROJECT_NAME}"
 VERSIONS=(12 13 14 15)
 for VERSION in 12 13 14 15; do
 	if [ ${VERSION} -eq ${VERSIONS[-1]} ]; then
@@ -32,4 +35,5 @@ for VERSION in 12 13 14 15; do
 	fi
 	build ${VERSION} ${LATEST}
 done
+docker buildx rm "${DOCKER_PROJECT_NAME}"
 

@@ -26,8 +26,8 @@ build () {
 
 docker buildx create --name "${DOCKER_PROJECT_NAME}"
 docker buildx use "${DOCKER_PROJECT_NAME}"
-VERSIONS=(12 13 14 15)
-for VERSION in 12 13 14 15; do
+VERSIONS=(12 13 14 15 16)
+for VERSION in "${VERSIONS[@]}"; do
 	if [ ${VERSION} -eq ${VERSIONS[-1]} ]; then
 		LATEST=1
 	else

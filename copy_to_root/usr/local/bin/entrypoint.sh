@@ -1,5 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env bash
 set -e
+
 if [[ "${DEBUG}z" != "z" ]]; then
     set -x
 fi

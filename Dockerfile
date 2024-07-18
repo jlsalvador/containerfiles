@@ -1,15 +1,17 @@
-FROM menci/archlinuxarm
+FROM ubuntu:latest
 
 RUN set -ex ;\
-	pacman -Syu --noconfirm \
+	apt update ;\
+	apt dist-upgrade -y ;\
+	apt install -y --no-install-recommends \
 		lxqt openbox \
-		tigervnc \
-		breeze-icons \
-		ttf-dejavu noto-fonts-emoji \
+		tigervnc-standalone-server tigervnc-tools \
+		breeze-icon-theme \
+		fonts-dejavu fonts-noto-color-emoji \
 		firefox ;\
 	useradd -m -G users user ;\
 	fc-cache ;\
-	rm -rf /tmp/* /var/cache/pacman/pkg/*
+	rm -rf /tmp/* /var/cache/apt/archives/*
 
 COPY --chown=root:root copy_to_root /
 

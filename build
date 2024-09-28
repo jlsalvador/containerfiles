@@ -1,39 +1,43 @@
 #!/usr/bin/env bash
 set -ex
 
-BASEDIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
-DOCKER_PROJECT_NAME="docker_builder"
+BUILDER="docker_builder"
+IMAGE="jlsalvador/postgres"
 
 build () {
 	VERSION=$1
 	LATEST=${2:-0}
-	cd ${BASEDIR}/${VERSION}
-	docker pull postgres:${VERSION}-alpine
-	if [ ${LATEST} -eq 0 ]; then
-		docker buildx build \
-			--platform linux/amd64,linux/arm64 \
-			-t jlsalvador/postgres:${VERSION}-alpine \
-			--push .
-	else
-		docker buildx build \
-			--platform linux/amd64,linux/arm64 \
-			-t jlsalvador/postgres \
-			-t jlsalvador/postgres:latest \
-			-t jlsalvador/postgres:${VERSION}-alpine \
-			--push .
+	TAGS=("${IMAGE}:${VERSION}-alpine")
+	if [ "${LATEST}" -eq 0 ]; then
+		TAGS+=("${IMAGE}" "${IMAGE}:latest")
 	fi
+
+	ARGS=()
+	for TAG in "${TAGS[@]}"; do
+		ARGS+=("--tag" "${TAG}")
+	done
+	docker pull "postgres:${VERSION}-alpine"
+	docker buildx build \
+		--build-arg VERSION="${VERSION}" \
+		--platform linux/amd64,linux/arm64 \
+		"${ARGS[@]}" \
+		--push \
+		.
 }
 
-docker buildx create --name "${DOCKER_PROJECT_NAME}"
-docker buildx use "${DOCKER_PROJECT_NAME}"
-VERSIONS=(12 13 14 15 16)
+cleanup() {
+	docker buildx rm "${BUILDER}"
+}
+
+trap cleanup ERR EXIT
+
+docker buildx create --use --name "${BUILDER}"
+VERSIONS=(12 13 14 15 16 17)
 for VERSION in "${VERSIONS[@]}"; do
-	if [ ${VERSION} -eq ${VERSIONS[-1]} ]; then
+	if [ "${VERSION}" -eq "${VERSIONS[-1]}" ]; then
 		LATEST=1
 	else
 		LATEST=0
 	fi
-	build ${VERSION} ${LATEST}
+	build "${VERSION}" "${LATEST}"
 done
-docker buildx rm "${DOCKER_PROJECT_NAME}"
-

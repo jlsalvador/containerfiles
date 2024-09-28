@@ -9,7 +9,8 @@ apk add --no-cache \
 	ca-certificates \
 	musl-locales musl-locales-lang \
 	offlineimap \
-	mutt
+	mutt \
+	vim
 addgroup -g ${GID} user
 adduser -u ${UID} -G user -D user
 install -o ${UID} -g ${GID} -d /home/user/Mail

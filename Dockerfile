@@ -21,4 +21,4 @@ USER user
 
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 
-CMD [ "vncserver", ":0" ]
+CMD [ "vncserver", "-fg", ":0" ]

@@ -11,6 +11,7 @@ cat > ~/.vnc/config <<EOF
 session=lxqt
 geometry=${RESOLUTION:-1920x1080}
 alwaysshared
+localhost=0
 EOF
 
 if [[ "${PASSWORD}z" == "z" ]]; then

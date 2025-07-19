@@ -2,6 +2,14 @@ FROM ubuntu:latest
 
 RUN set -ex ;\
 	apt update ;\
+	apt install -y --no-install-recommends \
+		ca-certificates ;\
+	rm -rf /tmp/* /var/cache/apt/archives/*
+
+COPY --chown=root:root copy_to_root /
+
+RUN set -ex ;\
+	apt update ;\
 	apt dist-upgrade -y ;\
 	apt install -y --no-install-recommends \
 		dbus-x11 lxqt openbox \
@@ -15,8 +23,6 @@ RUN set -ex ;\
 	useradd -m -G users user -s /bin/bash ;\
 	fc-cache ;\
 	rm -rf /tmp/* /var/cache/apt/archives/*
-
-COPY --chown=root:root copy_to_root /
 
 EXPOSE 5900
 

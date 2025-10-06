@@ -32,7 +32,7 @@ cleanup() {
 trap cleanup ERR EXIT
 
 docker buildx create --use --name "${BUILDER}"
-VERSIONS=(12 13 14 15 16 17)
+VERSIONS=(12 13 14 15 16 17 18)
 for VERSION in "${VERSIONS[@]}"; do
 	if [ "${VERSION}" -eq "${VERSIONS[-1]}" ]; then
 		LATEST=1

@@ -7,6 +7,7 @@ These are my public branches that I use for my own personal projects:
 - [curl-jq](https://github.com/jlsalvador/containerfiles/tree/curl-jq): Alpine with Curl and Jq.
 - [postgres](https://github.com/jlsalvador/containerfiles/tree/postgres): The Docker official image with `huge_pages = off`.
 - [remotedesktop](https://github.com/jlsalvador/containerfiles/tree/remotedesktop): LXQT desktop with Firefox for amd64 & arm64 connectable through VNC.
+- [torproxy](https://github.com/jlsalvador/containerfiles/tree/torproxy): Alpine with Tor and SOCKSPort 0.0.0.0:9050.
 
 
 ## License

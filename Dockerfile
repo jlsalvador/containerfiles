@@ -19,10 +19,14 @@ RUN set -ex ;\
 		libgtk-3-0t64 \
 		libfuse2t64 \
 		gvfs gvfs-fuse gvfs-backends \
-		firefox ;\
+		firefox \
+		curl \
+		flatpak kde-config-flatpak;\
 	useradd -m -G users user -s /bin/bash ;\
 	fc-cache ;\
 	rm -rf /tmp/* /var/cache/apt/archives/*
+
+RUN flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
 EXPOSE 5900
 

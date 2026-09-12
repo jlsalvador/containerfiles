@@ -3,9 +3,8 @@ PLATFORMS ?= linux/arm64,linux/amd64
 
 .PHONY: build
 build:
-	podman \
-		manifest rm -i \
-		${IMG}
+	podman rmi -f ${IMG} || true
+	podman manifest rm -i ${IMG} || true
 	podman \
 		manifest create \
 		${IMG}

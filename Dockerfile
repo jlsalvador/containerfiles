@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 ENV PATH="${BUN_INSTALL}/bin:/home/opencode/.bun/bin:${PATH}"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-	procps ca-certificates curl git git-lfs openssh-client ripgrep jq sudo tzdata unzip make gnupg2 \
+	procps ca-certificates curl git git-lfs openssh-client ripgrep jq sudo tzdata unzip make gnupg2 python3 \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN groupmod -g 985 users \

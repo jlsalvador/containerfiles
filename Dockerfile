@@ -1,8 +1,7 @@
 FROM debian:bookworm-slim
 
 ENV DEBIAN_FRONTEND=noninteractive \
-	BUN_INSTALL=/usr/local
-ENV PATH="${BUN_INSTALL}/bin:/home/opencode/.bun/bin:${PATH}"
+	OPENCODE_UPDATE=1
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 	procps ca-certificates curl git git-lfs openssh-client ripgrep jq sudo tzdata unzip make gnupg2 python3 \
@@ -14,13 +13,10 @@ RUN groupmod -g 985 users \
 	&& chmod 0440 /etc/sudoers.d/opencode
 
 USER opencode
-ENV BUN_INSTALL=/home/opencode/.bun
-ENV PATH="/home/opencode/.bun/bin:/usr/local/bin:${PATH}"
-RUN curl -fsSL https://bun.sh/install | bash \
-	&& bun --version \
-	&& bun install -g --trust @opencode/cli@2 \
-	&& opencode2 --version
-RUN mkdir -p /home/opencode/.bun/bin /home/opencode/.cache
+ENV PATH="/home/opencode/.opencode/bin:/home/opencode/.local/bin:/usr/local/bin:/usr/bin:/bin"
+
+COPY --chmod=755 entrypoint.sh /usr/local/bin/entrypoint.sh
+
 WORKDIR /workspace
 EXPOSE 4096
-CMD ["opencode", "serve", "--hostname", "0.0.0.0", "--port", "4096"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
